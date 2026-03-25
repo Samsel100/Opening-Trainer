@@ -1,0 +1,19 @@
+/home/samtorn/Projects/Godot/OpeningTrainer/.godot/mono/temp/bin/Debug/Opening Trainer.deps.json
+/home/samtorn/Projects/Godot/OpeningTrainer/.godot/mono/temp/bin/Debug/Opening Trainer.runtimeconfig.json
+/home/samtorn/Projects/Godot/OpeningTrainer/.godot/mono/temp/bin/Debug/Opening Trainer.dll
+/home/samtorn/Projects/Godot/OpeningTrainer/.godot/mono/temp/bin/Debug/Opening Trainer.pdb
+/home/samtorn/Projects/Godot/OpeningTrainer/.godot/mono/temp/bin/Debug/GodotSharp.dll
+/home/samtorn/Projects/Godot/OpeningTrainer/.godot/mono/temp/bin/Debug/GodotSharpEditor.dll
+/home/samtorn/Projects/Godot/OpeningTrainer/.godot/mono/temp/obj/Debug/Opening Trainer.csproj.AssemblyReference.cache
+/home/samtorn/Projects/Godot/OpeningTrainer/.godot/mono/temp/obj/Debug/Opening Trainer.GeneratedMSBuildEditorConfig.editorconfig
+/home/samtorn/Projects/Godot/OpeningTrainer/.godot/mono/temp/obj/Debug/Opening Trainer.AssemblyInfoInputs.cache
+/home/samtorn/Projects/Godot/OpeningTrainer/.godot/mono/temp/obj/Debug/Opening Trainer.AssemblyInfo.cs
+/home/samtorn/Projects/Godot/OpeningTrainer/.godot/mono/temp/obj/Debug/Opening Trainer.csproj.CoreCompileInputs.cache
+/home/samtorn/Projects/Godot/OpeningTrainer/.godot/mono/temp/obj/Debug/Opening Trainer.csproj.CopyComplete
+/home/samtorn/Projects/Godot/OpeningTrainer/.godot/mono/temp/obj/Debug/Opening Trainer.dll
+/home/samtorn/Projects/Godot/OpeningTrainer/.godot/mono/temp/obj/Debug/refint/Opening Trainer.dll
+/home/samtorn/Projects/Godot/OpeningTrainer/.godot/mono/temp/obj/Debug/Opening Trainer.pdb
+/home/samtorn/Projects/Godot/OpeningTrainer/.godot/mono/temp/obj/Debug/Opening Trainer.genruntimeconfig.cache
+/home/samtorn/Projects/Godot/OpeningTrainer/.godot/mono/temp/obj/Debug/ref/Opening Trainer.dll
+/home/samtorn/Projects/Godot/OpeningTrainer/.godot/mono/temp/bin/Debug/ChessDotNetCore.dll
+/home/samtorn/Projects/Godot/OpeningTrainer/.godot/mono/temp/bin/Debug/Newtonsoft.Json.dll

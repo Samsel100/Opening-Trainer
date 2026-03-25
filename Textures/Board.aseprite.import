@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.noop"
+type="PackedDataContainer"
+uid="uid://b43eyqh0istpw"
+path="res://.godot/imported/Board.aseprite-7713cd0c9eecc8d80a1cd1e7cce1ef44.res"
+
+[deps]
+
+source_file="res://Textures/Board.aseprite"
+dest_files=["res://.godot/imported/Board.aseprite-7713cd0c9eecc8d80a1cd1e7cce1ef44.res"]
+
+[params]
+

@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "dgSpecHash": "AcCSUB5v4ZffQ4/fqS2S/16EdUtvlY3xbSfncRTJO8jxCNgFZRs9IA9hzeANMoCjtMOJ/g76XkB68U5k8iY9Qw==",
+  "success": true,
+  "projectFilePath": "/home/samtorn/Projects/Godot/OpeningTrainer/Opening Trainer.csproj",
+  "expectedPackageFiles": [
+    "/home/samtorn/.nuget/packages/chessdotnetcore/1.6.0/chessdotnetcore.1.6.0.nupkg.sha512",
+    "/home/samtorn/.nuget/packages/godot.sourcegenerators/4.5.1/godot.sourcegenerators.4.5.1.nupkg.sha512",
+    "/home/samtorn/.nuget/packages/godotsharp/4.5.1/godotsharp.4.5.1.nupkg.sha512",
+    "/home/samtorn/.nuget/packages/godotsharpeditor/4.5.1/godotsharpeditor.4.5.1.nupkg.sha512",
+    "/home/samtorn/.nuget/packages/newtonsoft.json/13.0.3/newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

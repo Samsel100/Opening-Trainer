@@ -1,0 +1,13 @@
+Sprite2D
+TileMapLayer
+Label
+OptionButton
+Button
+LineEdit
+Control
+OptionButton      - Matches the "dropdown" keyword.
+LineEdit      - Matches the "input" keyword.
+Node2D
+CanvasLayer
+CanvasModulate
+Camera2D

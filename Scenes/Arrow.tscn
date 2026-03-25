@@ -1,0 +1,34 @@
+[gd_scene load_steps=2 format=4 uid="uid://ctb043uyrn73j"]
+
+[sub_resource type="PortableCompressedTexture2D" id="PortableCompressedTexture2D_vqecr"]
+_data = PackedByteArray("AAADAAUAAAABAAAAEAAAABAAAAA2AAAAUklGRi4AAABXRUJQVlA4TCEAAAAvD8ADEA8wqzH/8x84FAJAw9SudmhDCWcIEf0P8dLrFb8A")
+size_override = Vector2(16, 16)
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(0, -8)
+texture = SubResource("PortableCompressedTexture2D_vqecr")
+metadata/_aseprite_wizard_interface_config_ = {
+"pending_changes": {}
+}
+metadata/_aseprite_wizard_config_ = {
+"convert_fps_field": 60.0,
+"convert_ms_field": 16.0,
+"convert_to_fps": false,
+"embed_tex": true,
+"i_mode": 1,
+"keep_anim_length": false,
+"layers": [],
+"o_ex_p": "",
+"o_folder": "",
+"o_name": "",
+"only_visible": false,
+"player": "",
+"scale": "1.0",
+"slice": "",
+"source": "res://Textures/Arrow.aseprite",
+"source_uid": 6454163684815710598
+}
+metadata/_aseprite_wizard_source_file_hash_ = "166573924a4de253ac9d6476b91ccb3e"

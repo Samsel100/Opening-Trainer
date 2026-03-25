@@ -1,0 +1,15 @@
+{
+    "files.exclude": {
+        "**/*.uid": true,
+        "Assets/**": true,
+        "addons/**": true,
+        "Scenes/**": true,
+        ".godot/**": true,
+        ".gitattributes": true,
+        ".editorconfig": true,
+        ".gitignore": true,
+        "project.godot": true,
+        "One Way Out.csproj": true,
+        "One Way Out.sln": true
+    }
+}
