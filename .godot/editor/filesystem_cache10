@@ -1,5 +1,5 @@
 bd8b7a4084b1d03d7506a69e643bafa0
-::res://::1774452030
+::res://::1775139273
 icon.svg::CompressedTexture2D::5002169693479693272::1774084698::1774084703::1::::<><><>0<>0<>b31db3f75a4cd2a1c1f53ab2a7ce95a3<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
 ::res://addons/::1774086580
 ::res://addons/AsepriteWizard/::1774086582
@@ -117,8 +117,8 @@ Arrow.tscn::PackedScene::6110064989768889913::1774204702::0::1::::<><><>0<>0<><>
 Main.tscn::PackedScene::4811896663379860430::1774368971::0::1::::<><><>0<>0<><>::uid://cdkbqbdm0mjcm::::res://Scripts/Board.cs<>uid://cupl7vkhu28yo::::res://Scripts/Trainer.cs<>uid://ctb043uyrn73j::::res://Scenes/Arrow.tscn<>uid://ci33qeyq8ggki::::res://Textures/Pieces New.aseprite
 ::res://Scripts/::1774105782
 Board.cs::CSharpScript::5004141023273020836::1774250494::0::1::::<>Node2D<><>0<>0<><>::
-Opening.cs::CSharpScript::3647886328316507586::1774285436::0::1::::<><><>0<>0<><>::
-Trainer.cs::CSharpScript::6208310057567406266::1774344645::0::1::::<>Node2D<><>0<>0<><>::
+Opening.cs::CSharpScript::3647886328316507586::1774539703::0::1::::<><><>0<>0<><>::
+Trainer.cs::CSharpScript::6208310057567406266::1774540377::0::1::::<>Node2D<><>0<>0<><>::
 ::res://Textures/::1774367946
 Arrow.aseprite::PackedDataContainer::6454163684815710598::1774204381::1774204601::1::::<><><>0<>0<>4e0cd7cd29b9bb88504f89c2d77d559a<>res://.godot/imported/Arrow.aseprite-7c18ac1fdae2ac6e58efed2b2c899333.res::
 Board.aseprite::PackedDataContainer::4479986305669036752::1774367945::1774367946::1::::<><><>0<>0<>0140cff5e5b307645d0861613cce9e07<>res://.godot/imported/Board.aseprite-7713cd0c9eecc8d80a1cd1e7cce1ef44.res::

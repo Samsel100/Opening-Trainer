@@ -17,3 +17,4 @@
 /home/samtorn/Projects/Godot/OpeningTrainer/.godot/mono/temp/obj/Debug/ref/Opening Trainer.dll
 /home/samtorn/Projects/Godot/OpeningTrainer/.godot/mono/temp/bin/Debug/ChessDotNetCore.dll
 /home/samtorn/Projects/Godot/OpeningTrainer/.godot/mono/temp/bin/Debug/Newtonsoft.Json.dll
+/home/samtorn/Projects/Godot/OpeningTrainer/.godot/mono/temp/obj/Debug/Opening Trainer.sourcelink.json
