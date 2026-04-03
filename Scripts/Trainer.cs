@@ -17,7 +17,6 @@ public partial class Trainer : Node2D
     [Export] public Button retryButton;
 
     [Export] public OptionButton pickOpeningButton;
-
     [Export] public OptionButton modeButton;
 
     [Export] public LineEdit addOpeningInput;
@@ -37,10 +36,9 @@ public partial class Trainer : Node2D
 
     private Opening currentOpening;
     private Dictionary<string, Opening> openings;
-    private List<List<string>> lines;
-    private int currentLineIndex = 0;
-    private int currentMoveIndex = 0;
-    private int previousShuffleLineIndex = -1;
+
+    private Node currentNode;
+    private List<Node> history = new();
 
     private List<string> recordingLine = new();
 
@@ -60,9 +58,8 @@ public partial class Trainer : Node2D
         ResetBoard();
 
         foreach (TrainingMode mode in Enum.GetValues(typeof(TrainingMode)))
-        {
             modeButton.AddItem(mode.ToString(), (int)mode);
-        }
+
         modeButton.ItemSelected += SetTrainingMode;
         modeButton.Select((int)TrainingMode.None);
 
@@ -77,14 +74,10 @@ public partial class Trainer : Node2D
         }
 
         pickOpeningButton.ItemSelected += SelectOpening;
-
         addOpeningButton.ButtonDown += AddOpening;
-
         endRecordingButton.ButtonDown += EndRecording;
-
         nextButton.ButtonDown += NextMove;
         previousButton.ButtonDown += PreviousMove;
-
         retryButton.ButtonDown += Retry;
 
         HideUI();
@@ -100,22 +93,12 @@ public partial class Trainer : Node2D
             case TrainingMode.RecordingLine:
                 RecordMove(move);
                 break;
-
-            case TrainingMode.ShowLines:
-                break;
-
             case TrainingMode.FreeInput:
                 HandleFreeInput(move);
                 break;
-
             case TrainingMode.MultipleChoice:
                 HandleMultipleChoice(move);
                 break;
-
-            case TrainingMode.Shuffle:
-                HandleShuffle(move);
-                break;
-
             default:
                 game.MakeMove(move, true);
                 board.SetupFromGame(game);
@@ -127,48 +110,32 @@ public partial class Trainer : Node2D
     {
         HideUI();
         ResetBoard();
+
         title.Text = $"Training the {currentOpening.Name}";
+
+        currentNode = currentOpening.Root;
+        history.Clear();
+
         switch (mode)
         {
             case TrainingMode.RecordingLine:
                 RecordingLineGroup.Show();
                 endRecordingButton.Disabled = false;
                 break;
+
             case TrainingMode.ShowLines:
                 ShowLinesGroup.Show();
                 nextButton.Disabled = false;
                 previousButton.Disabled = false;
-
-                lines = currentOpening.GetLines();
-                currentLineIndex = 0;
-                currentMoveIndex = 0;
                 break;
+
             case TrainingMode.FreeInput:
-                lines = currentOpening.GetLines();
-                currentLineIndex = 0;
-                currentMoveIndex = 0;
-
-                if (currentOpening.Color == "b")
-                {
-                    NextMove();
-                }
-                break;
-
             case TrainingMode.MultipleChoice:
-                lines = currentOpening.GetLines();
-                currentLineIndex = 0;
-                currentMoveIndex = 0;
-
                 if (currentOpening.Color == "b")
-                {
                     NextMove();
-                }
-                MakeMultipleChoices();
 
-                break;
-            case TrainingMode.Shuffle:
-                lines = currentOpening.GetLines();
-                LoadRandomPosition();
+                if (mode == TrainingMode.MultipleChoice)
+                    MakeMultipleChoices();
                 break;
         }
     }
@@ -176,88 +143,15 @@ public partial class Trainer : Node2D
     private void HideUI()
     {
         RecordingLineGroup.Hide();
-        endRecordingButton.Disabled = true;
-
         ShowLinesGroup.Hide();
+
         nextButton.Disabled = true;
         previousButton.Disabled = true;
+        endRecordingButton.Disabled = true;
 
         feedback.Text = "";
         retryButton.Hide();
         retryButton.Disabled = true;
-    }
-
-    private void SelectOpening(long index)
-    {
-        foreach (Opening opening in openings.Values)
-        {
-            if (opening.id == index)
-            {
-                SelectOpening(opening.Name);
-                return;
-            }
-        }
-    }
-
-    private void SelectOpening(string name)
-    {
-        currentOpening = openings[name];
-        if (mode != TrainingMode.None)
-        {
-            OnTrainingStarted();
-        }
-
-    }
-
-    private void AddOpening()
-    {
-        string name = addOpeningInput.Text;
-        if (name == "") return;
-        string color = colorButton.GetItemId(colorButton.Selected) == 0 ? "w" : "b";
-        if (!openings.Keys.Contains(name))
-        {
-            AddOpening(name, color);
-        }
-
-        addOpeningInput.Text = "";
-    }
-
-    private void AddOpening(string name, string color)
-    {
-        openings[name] = new Opening(name, color);
-        int id = openings.Count;
-        openings[name].id = id;
-        pickOpeningButton.AddItem(name, id);
-    }
-
-    private void ApplyMoveString(string moveString)
-    {
-        var move = new Move(
-            moveString.Substring(0, 2),
-            moveString.Substring(2, 2),
-            game.CurrentPlayer);
-
-        game.MakeMove(move, true);
-        board.SetupFromGame(game);
-    }
-
-    private void SetTrainingMode(long index)
-    {
-        SetTrainingMode((TrainingMode)index);
-    }
-
-    private void SetTrainingMode(TrainingMode mode)
-    {
-        this.mode = mode;
-        if (currentOpening != null)
-        {
-            OnTrainingStarted();
-        }
-    }
-
-    private void SaveAllOpenings()
-    {
-        Opening.SaveOpenings(OPENING_PATH, openings.Values.ToList());
     }
 
     private void ResetBoard(bool deleteArrows = true)
@@ -265,8 +159,73 @@ public partial class Trainer : Node2D
         game = new ChessGame();
         game.Initialize();
         board.SetupFromGame(game);
+
         if (deleteArrows)
             board.DeleteAllArrows();
+    }
+
+    private void RebuildFromHistory()
+    {
+        ResetBoard(false);
+
+        currentNode = currentOpening.Root;
+
+        foreach (var node in history)
+        {
+            ApplyMoveString(node.Move);
+            currentNode = node;
+        }
+    }
+
+    private void ApplyMoveString(string moveString)
+    {
+        var move = new Move(
+            moveString.Substring(0, 2),
+            moveString.Substring(2, 2),
+            game.CurrentPlayer
+        );
+
+        game.MakeMove(move, true);
+        board.SetupFromGame(game);
+    }
+
+    private void ApplyNode(Node node)
+    {
+        ApplyMoveString(node.Move);
+        history.Add(node);
+        currentNode = node;
+    }
+
+    private void NextMove()
+    {
+        if (currentNode.Children.Count == 0)
+        {
+            ResetBoard();
+            currentNode = currentOpening.Root;
+            history.Clear();
+            return;
+        }
+
+        var next = currentNode.Children.Values.First();
+        ApplyNode(next);
+    }
+
+    private void PreviousMove()
+    {
+        if (history.Count == 0)
+            return;
+
+        history.RemoveAt(history.Count - 1);
+        RebuildFromHistory();
+    }
+
+    private void Retry()
+    {
+        retryButton.Hide();
+        retryButton.Disabled = true;
+        feedback.Text = "";
+
+        RebuildFromHistory();
     }
 
     private void OnWrongMove()
@@ -279,16 +238,6 @@ public partial class Trainer : Node2D
     private void OnCorrectMove()
     {
         feedback.Text = "Correct!";
-    }
-
-    private void Retry()
-    {
-        retryButton.Hide();
-        retryButton.Disabled = true;
-
-        feedback.Text = "";
-
-        PreviousMove();
     }
 
     private void RecordMove(Move move)
@@ -310,111 +259,38 @@ public partial class Trainer : Node2D
         recordingLine.Clear();
     }
 
-    private void NextMove()
-    {
-        if (lines.Count == 0) return;
-
-        var line = lines[currentLineIndex];
-
-        if (currentMoveIndex < line.Count)
-        {
-            ApplyMoveString(line[currentMoveIndex]);
-            currentMoveIndex++;
-        }
-        else
-        {
-            currentLineIndex++;
-            if (currentLineIndex >= lines.Count)
-            {
-                currentLineIndex = 0;
-            }
-            ResetBoard();
-
-            currentMoveIndex = 0;
-        }
-    }
-
-    private void PreviousMove()
-    {
-        if (lines.Count == 0) return;
-
-        if (currentMoveIndex > 0)
-        {
-            currentMoveIndex--;
-            RebuildCurrentLine();
-        }
-        else
-        {
-            currentLineIndex = (currentLineIndex - 1 + lines.Count) % lines.Count;
-            var line = lines[currentLineIndex];
-
-            currentMoveIndex = line.Count;
-            RebuildCurrentLine();
-        }
-    }
-
-    private void RebuildCurrentLine()
-    {
-        ResetBoard(false);
-
-        var line = lines[currentLineIndex];
-
-        for (int i = 0; i < currentMoveIndex; i++)
-        {
-            ApplyMoveString(line[i]);
-        }
-    }
-
     private void HandleFreeInput(Move move)
     {
-        string correctMove = lines[currentLineIndex][currentMoveIndex];
-        string attemptedMove = $"{move.OriginalPosition}{move.NewPosition}";
+        string attempted = $"{move.OriginalPosition}{move.NewPosition}";
 
-        if (attemptedMove == correctMove)
+        if (currentNode.Children.TryGetValue(attempted, out var next))
         {
-            ApplyMoveString(correctMove);
-            currentMoveIndex++;
+            ApplyNode(next);
             OnCorrectMove();
+            NextMove();
         }
         else
         {
-            ApplyMoveString(attemptedMove);
-            currentMoveIndex++;
+            ApplyMoveString(attempted);
             OnWrongMove();
-            return;
-        }
-
-        NextMove();
-        if (currentMoveIndex == 0 && currentOpening.Color == "b")
-        {
-            NextMove();
         }
     }
 
     private void HandleMultipleChoice(Move move)
     {
-        string correctMove = lines[currentLineIndex][currentMoveIndex];
-        string attemptedMove = $"{move.OriginalPosition}{move.NewPosition}";
+        string attempted = $"{move.OriginalPosition}{move.NewPosition}";
 
-        if (attemptedMove == correctMove)
+        if (currentNode.Children.TryGetValue(attempted, out var next))
         {
-            ApplyMoveString(correctMove);
-            currentMoveIndex++;
+            ApplyNode(next);
             OnCorrectMove();
+            NextMove();
         }
         else
         {
-            ApplyMoveString(attemptedMove);
-            currentMoveIndex++;
+            ApplyMoveString(attempted);
             OnWrongMove();
             return;
-        }
-
-
-        NextMove();
-        if (currentMoveIndex == 0 && currentOpening.Color == "b")
-        {
-            NextMove();
         }
 
         MakeMultipleChoices();
@@ -423,86 +299,84 @@ public partial class Trainer : Node2D
     private void MakeMultipleChoices()
     {
         board.DeleteAllArrows();
+
         List<string> choices = new();
-        List<Move> validMoves = game.GetValidMoves(game.CurrentPlayer).ToList();
-        Random rng = new();
+        var validMoves = game.GetValidMoves(game.CurrentPlayer).ToList();
 
         int count = Math.Min(4, validMoves.Count) - 1;
 
         for (int i = 0; i < count; i++)
         {
-            int index;
             string choice;
-
             do
             {
-                index = rng.Next(validMoves.Count);
-                choice = $"{validMoves[index].OriginalPosition}{validMoves[index].NewPosition}";
+                var m = validMoves[rng.Next(validMoves.Count)];
+                choice = $"{m.OriginalPosition}{m.NewPosition}";
             }
             while (choices.Contains(choice));
 
             choices.Add(choice);
         }
 
-        choices.Add(lines[currentLineIndex][currentMoveIndex]);
+        choices.AddRange(currentNode.Children.Keys);
 
-        foreach (string choice in choices)
-        {
-            board.DrawArrow(choice);
-        }
+        foreach (var c in choices)
+            board.DrawArrow(c);
     }
 
-    private void HandleShuffle(Move move)
+    private void SelectOpening(long index)
     {
-        string correctMove = lines[currentLineIndex][currentMoveIndex];
-        string attemptedMove = $"{move.OriginalPosition}{move.NewPosition}";
-
-        if (attemptedMove == correctMove)
-        {
-            ApplyMoveString(correctMove);
-            OnCorrectMove();
-        }
-        else
-        {
-            ApplyMoveString(attemptedMove);
-            currentMoveIndex++;
-            OnWrongMove();
-            return;
-        }
-
-        LoadRandomPosition();
+        foreach (var o in openings.Values)
+            if (o.id == index)
+                SelectOpening(o.Name);
     }
 
-    private void LoadRandomPosition()
+    private void SelectOpening(string name)
     {
-        ResetBoard();
+        currentOpening = openings[name];
 
-        do
+        if (mode != TrainingMode.None)
+            OnTrainingStarted();
+    }
+
+    private void AddOpening()
+    {
+        string name = addOpeningInput.Text;
+        if (name == "") return;
+
+        string color = colorButton.GetItemId(colorButton.Selected) == 0 ? "w" : "b";
+
+        if (!openings.ContainsKey(name))
         {
-            currentLineIndex = rng.Next(lines.Count);
-
-        } while (currentLineIndex == previousShuffleLineIndex && lines.Count > 1);
-
-        previousShuffleLineIndex = currentLineIndex;
-
-        var line = lines[currentLineIndex];
-
-        currentMoveIndex = rng.Next(line.Count);
-
-        while ((currentOpening.Color == "w" && currentMoveIndex % 2 != 0) || (currentOpening.Color == "b" && currentMoveIndex % 2 == 0))
-            currentMoveIndex = rng.Next(line.Count);
-
-        for (int i = 0; i < currentMoveIndex; i++)
-        {
-            ApplyMoveString(line[i]);
+            openings[name] = new Opening(name, color);
+            openings[name].id = openings.Count;
+            pickOpeningButton.AddItem(name, openings[name].id);
         }
+
+        addOpeningInput.Text = "";
+    }
+
+    private void SetTrainingMode(long index)
+    {
+        SetTrainingMode((TrainingMode)index);
+    }
+
+    private void SetTrainingMode(TrainingMode mode)
+    {
+        this.mode = mode;
+
+        if (currentOpening != null)
+            OnTrainingStarted();
+    }
+
+    private void SaveAllOpenings()
+    {
+        Opening.SaveOpenings(OPENING_PATH, openings.Values.ToList());
     }
 
     public override void _Notification(int what)
     {
         if (what == NotificationWMCloseRequest)
-        {
             SaveAllOpenings();
-        }
     }
 }
