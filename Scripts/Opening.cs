@@ -21,7 +21,7 @@ public class Opening
         Root = new Node("");
     }
 
-    public void AddLine(string sanMoves)
+    public void AddLine(string sanMoves, string lineName)
     {
         Node current = Root;
 
@@ -29,7 +29,7 @@ public class Opening
         {
             if (!current.Children.TryGetValue(san, out var next))
             {
-                next = new Node(san);
+                next = new Node(san, lineName);
                 current.Children[san] = next;
             }
 
@@ -94,13 +94,15 @@ public class Opening
 public class Node
 {
     public string Move { get; set; }
+    public string LineName { get; set; }
     public Dictionary<string, Node> Children { get; set; }
 
     public Node() { }
 
-    public Node(string move)
+    public Node(string move, string lineName = "")
     {
         Move = move;
+        LineName = lineName;
         Children = new Dictionary<string, Node>();
     }
 }

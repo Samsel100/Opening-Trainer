@@ -30,6 +30,7 @@ _data = PackedByteArray("AAADAAUAAAABAAAACAAAAAgAAAAsAAAAUklGRiQAAABXRUJQVlA4TBg
 size_override = Vector2(8, 8)
 
 [node name="Main" type="Node2D"]
+position = Vector2(1, 0)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -103,7 +104,6 @@ theme_override_font_sizes/font_size = 30
 text = "Training Mode"
 
 [node name="Recording Line" type="Control" parent="CanvasLayer"]
-visible = false
 layout_mode = 3
 anchors_preset = 4
 anchor_top = 0.5
@@ -115,9 +115,17 @@ grow_vertical = 2
 
 [node name="End Recording" type="Button" parent="CanvasLayer/Recording Line"]
 layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
+offset_top = -84.0
+offset_right = 81.0
+offset_bottom = -53.0
 text = "Save Line"
+
+[node name="LineEdit" type="LineEdit" parent="CanvasLayer/Recording Line"]
+layout_mode = 0
+offset_top = -123.0
+offset_right = 144.0
+offset_bottom = -92.0
+placeholder_text = "Line Name"
 
 [node name="Show Lines" type="Control" parent="CanvasLayer"]
 layout_mode = 3
@@ -180,18 +188,18 @@ placeholder_text = "Opening name..."
 [node name="Button" type="Button" parent="CanvasLayer/Add Opening"]
 layout_mode = 0
 offset_left = -223.0
-offset_top = 187.0
+offset_top = 206.0
 offset_right = -176.0
-offset_bottom = 223.0
+offset_bottom = 242.0
 theme_override_font_sizes/font_size = 20
 text = "Add"
 
 [node name="OptionButton" type="OptionButton" parent="CanvasLayer/Add Opening"]
 layout_mode = 0
 offset_left = -224.0
-offset_top = 145.0
+offset_top = 158.0
 offset_right = -135.0
-offset_bottom = 181.0
+offset_bottom = 194.0
 theme_override_font_sizes/font_size = 20
 item_count = 2
 popup/item_0/text = "White"
@@ -205,10 +213,31 @@ offset_left = -224.0
 offset_top = 114.0
 offset_right = -172.0
 offset_bottom = 142.0
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 30
 text = "Color"
 
-[node name="Trainer" type="Node2D" parent="." node_paths=PackedStringArray("board", "RecordingLineGroup", "ShowLinesGroup", "title", "feedback", "retryButton", "pickOpeningButton", "modeButton", "addOpeningInput", "addOpeningButton", "colorButton", "endRecordingButton", "nextButton", "previousButton")]
+[node name="Lines" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="CanvasLayer/Lines"]
+layout_mode = 0
+offset_top = 516.0
+offset_right = 76.0
+offset_bottom = 558.0
+theme_override_font_sizes/font_size = 30
+text = "Lines"
+
+[node name="Tree" type="Tree" parent="CanvasLayer/Lines"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 574.0
+offset_right = 448.0
+offset_bottom = 1072.0
+
+[node name="Trainer" type="Node2D" parent="." node_paths=PackedStringArray("board", "RecordingLineGroup", "ShowLinesGroup", "title", "feedback", "retryButton", "pickOpeningButton", "modeButton", "linesTree", "addOpeningInput", "addOpeningButton", "colorButton", "lineNameInput", "endRecordingButton", "nextButton", "previousButton")]
 script = ExtResource("1_kln2b")
 board = NodePath("../Board")
 RecordingLineGroup = NodePath("../CanvasLayer/Recording Line")
@@ -218,9 +247,11 @@ feedback = NodePath("../CanvasLayer/Feedback/Text")
 retryButton = NodePath("../CanvasLayer/Feedback/Button")
 pickOpeningButton = NodePath("../CanvasLayer/Opening/Opening Button")
 modeButton = NodePath("../CanvasLayer/Opening/Mode Button")
+linesTree = NodePath("../CanvasLayer/Lines/Tree")
 addOpeningInput = NodePath("../CanvasLayer/Add Opening/LineEdit")
 addOpeningButton = NodePath("../CanvasLayer/Add Opening/Button")
 colorButton = NodePath("../CanvasLayer/Add Opening/OptionButton")
+lineNameInput = NodePath("../CanvasLayer/Recording Line/LineEdit")
 endRecordingButton = NodePath("../CanvasLayer/Recording Line/End Recording")
 nextButton = NodePath("../CanvasLayer/Show Lines/Next")
 previousButton = NodePath("../CanvasLayer/Show Lines/Previous")

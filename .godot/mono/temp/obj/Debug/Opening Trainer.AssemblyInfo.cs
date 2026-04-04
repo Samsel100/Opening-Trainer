@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Opening Trainer")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dd6367a276a31603e701875ccca104df4fe8649d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+82998f9619f4513db55038c8f91e59148f386daa")]
 [assembly: System.Reflection.AssemblyProductAttribute("Opening Trainer")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Opening Trainer")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
